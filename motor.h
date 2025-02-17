@@ -66,11 +66,17 @@ PwmOut pwm;
         pwm.suspend();
     }
 
+    void setSpeed(float speed) {
+        
+    }
+
 private:
     void update() {
         if (mode == Bipolar) {
+            bipolar.write(1);
             pwm.write(0.5*power + 0.5);
         } else {
+            bipolar.write(0);
             direction.write(power > 0 ? 1 : 0);
             pwm.write(abs(power));
         }
