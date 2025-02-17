@@ -1,6 +1,7 @@
 #include "mbed.h"
 #include "wheel.h"
 #include "pins.h"
+#include "C12832.h"
 
 
 
@@ -97,7 +98,8 @@ int main()
 
    
     while (true) {
-         square();
+        square();
+        // square();
         //lcd.locate(8,20);
         //lcd.printf("L Pulses: %02.1d   R Pulses: %02.1d", L.encoder.getPulses(), R.encoder.getPulses());
     }

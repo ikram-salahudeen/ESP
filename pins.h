@@ -8,7 +8,7 @@
 #define MOTOR_R_DIR PA_1
 #define MOTOR_R_PWM PA_0
 
-#define ENABLE PA_3
+#define ENABLE PB_2
 
 #define MICROLAN
 
