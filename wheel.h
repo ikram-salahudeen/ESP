@@ -30,7 +30,7 @@ class Wheel {
 
 public:
 
-PwmOut pwm;
+    PwmOut pwm;
     DigitalOut direction;
     DigitalOut bipolar;
 
@@ -38,13 +38,13 @@ PwmOut pwm;
 
     Wheel (
         PinName pwmPin, PinName directionPin, PinName bipolarPin,
-        PinName encoder1, PinName encoder2, PinName encoderIdx,
+        PinName encoder1, PinName encoder2,
         float frequency = 10000):
         pwm(pwmPin), direction(directionPin), bipolar(bipolarPin), frequency(frequency),
-        encoder(encoder1, encoder2, encoderIdx, 256, QEI::X4_ENCODING) {
+        encoder(encoder1, encoder2, NC, 256, QEI::X4_ENCODING) {
         pwm.period(1/frequency);
-        speedTicker.attach(callback(this, &Wheel::speedControlISR), 0.1);
-        pwm.suspend();
+        //speedTicker.attach(callback(this, &Wheel::speedControlISR), 0.1);
+        //pwm.suspend();
     };
 
     

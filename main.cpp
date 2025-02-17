@@ -1,7 +1,5 @@
 #include "mbed.h"
 #include "wheel.h"
-#include "math.h"
-#include "platform/mbed_thread.h"
 #include "pins.h"
 
 
@@ -12,10 +10,14 @@ constexpr float TURNING_POWER = 0.2;
 
 
 
-Wheel L(MOTOR_L_PWM, MOTOR_L_DIR, MOTOR_L_BIPOLAR, ENCODER_L_A, ENCODER_L_B, NC, PWM_FREQUENCY);
-Wheel R(MOTOR_R_PWM, MOTOR_R_DIR, MOTOR_R_BIPOLAR, ENCODER_R_A, ENCODER_R_B, NC, PWM_FREQUENCY);
+Wheel L(MOTOR_L_PWM, MOTOR_L_DIR, MOTOR_L_BIPOLAR, ENCODER_L_A, ENCODER_L_B, PWM_FREQUENCY);
+Wheel R(MOTOR_R_PWM, MOTOR_R_DIR, MOTOR_R_BIPOLAR, ENCODER_R_A, ENCODER_R_B, PWM_FREQUENCY);
+
+//C12832 lcd(D11, D13, D12, D7, D10);
+
 
 void test() {
+
     printf("Enc");
     while(true) {
          printf("%i %i\n", (int) L.encoder.getPulses(), (int) R.encoder.getPulses());
@@ -85,11 +87,19 @@ void square() {
 
 }
 
+
+
 int main()
 {
-
+    
     DigitalOut en (ENABLE);
     en.write(1);
 
-    test();
+   
+    while (true) {
+         square();
+        //lcd.locate(8,20);
+        //lcd.printf("L Pulses: %02.1d   R Pulses: %02.1d", L.encoder.getPulses(), R.encoder.getPulses());
+    }
+
 }
