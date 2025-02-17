@@ -1,13 +1,21 @@
 #include "mbed.h"
 #include "QEI.h"
 
+constexpr int PWM_FREQUENCY = 30000;
+constexpr float WHEEL_DIAMETER = 50; // mm
+
 enum Mode {
     Bipolar,
     Unipolar
 };
 
+constexpr float Kp = 1;
+constexpr float Ki = 1;
 
-class Motor {
+
+
+
+class Wheel {
     /*
     power = -1.00 (max power in reverse)
     power = 0.00 (no power)
@@ -28,13 +36,15 @@ PwmOut pwm;
 
      QEI encoder;
 
-    Motor (
+    Wheel (
         PinName pwmPin, PinName directionPin, PinName bipolarPin,
         PinName encoder1, PinName encoder2, PinName encoderIdx,
         float frequency = 10000):
         pwm(pwmPin), direction(directionPin), bipolar(bipolarPin), frequency(frequency),
         encoder(encoder1, encoder2, encoderIdx, 256, QEI::X4_ENCODING) {
         pwm.period(1/frequency);
+        speedTicker.attach(callback(this, &Wheel::speedControlISR), 0.1);
+        pwm.suspend();
     };
 
     
@@ -64,13 +74,35 @@ PwmOut pwm;
 
     void stop() {
         pwm.suspend();
+        isMoving = false;
+    }
+
+    void start() {
+        pwm.resume();
+        isMoving = true;
+    }
+
+    void speedControlISR() {
+        if (!isMoving) return;
+
+        static int previousPulses = 0;
+        static float previousTime = 0;
+        float newTime = 0;//timer.read();
+        int newPulses = encoder.getPulses();
+        //float calculatedSpeed = (newPulses - previousPulses) (newTime - previousTime)
+
+        //float error = targetSpeed;
     }
 
     void setSpeed(float speed) {
-        
+        targetSpeed = speed;
     }
 
 private:
+    float targetSpeed = 0;
+    Ticker speedTicker;
+    bool isMoving = false;
+
     void update() {
         if (mode == Bipolar) {
             bipolar.write(1);
