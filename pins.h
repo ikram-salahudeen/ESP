@@ -6,7 +6,7 @@
 
 #define MOTOR_R_BIPOLAR PA_4
 #define MOTOR_R_DIR PA_1
-#define MOTOR_R_PWM PA_0
+#define MOTOR_R_PWM PA_13
 
 #define ENABLE PB_2
 

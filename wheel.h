@@ -49,18 +49,17 @@ public:
 
     
     void setPower(float newPower) {
-        if (newPower != power) {
+       
             power = newPower;
 
-        }
+        
+        update();
     }
     float getPower() { return power; };
 
     void setMode(Mode newMode){
-        if (newMode != mode) {
-            mode = newMode;
-
-        }
+        mode = newMode;
+        update();
     }
     Mode getMode() { return mode;};
 
@@ -71,16 +70,6 @@ public:
         }
     }
     float getFrequncy() { return frequency; };
-
-    void stop() {
-        pwm.suspend();
-        isMoving = false;
-    }
-
-    void start() {
-        pwm.resume();
-        isMoving = true;
-    }
 
     void speedControlISR() {
         if (!isMoving) return;

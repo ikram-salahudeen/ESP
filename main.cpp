@@ -32,20 +32,14 @@ void turn(int dir /* 1 right, -1 left */) {
     L.setPower(-0.2 * dir);
     R.setPower( 0.2 * dir);
 
-    L.start();
-    R.start();
-
     int pulses = distance * (256.0f / (WHEEL_DIAMETER * 3.14f));
     int targetL = L.encoder.getPulses() - dir * pulses;
     int targetR = R.encoder.getPulses() + dir * pulses;
 
     while (dir * L.encoder.getPulses() > dir * targetL || dir * R.encoder.getPulses() < dir * targetR) {
-        if (dir * L.encoder.getPulses() <= dir * targetL ) L.stop();
-        if (dir * R.encoder.getPulses() >= dir * targetR ) R.stop();
+        if (dir * L.encoder.getPulses() <= dir * targetL ) L.setPower(0);
+        if (dir * R.encoder.getPulses() >= dir * targetR ) R.setPower(0);
     }
-
-    L.stop();
-    R.stop();
     wait(0.2);
 }
 
@@ -53,20 +47,14 @@ void forward(float distance /* in mm */) {
     L.setPower(0.4);
     R.setPower(0.4);
 
-    L.start();
-    R.start();
-
     int pulses = distance * (256.0f / (WHEEL_DIAMETER * 3.14f));
     int targetL = L.encoder.getPulses() + pulses;
     int targetR = R.encoder.getPulses() + pulses;
 
     while (L.encoder.getPulses() < targetL || R.encoder.getPulses() < targetR) {
-        if (L.encoder.getPulses() >= targetL ) L.stop();
-        if (R.encoder.getPulses() >= targetR ) R.stop();
+        if (L.encoder.getPulses() >= targetL ) L.setPower(0);
+        if (R.encoder.getPulses() >= targetR ) R.setPower(0);
     }
-
-    L.stop();
-    R.stop();
 
     wait(0.2);
 }
@@ -96,12 +84,20 @@ int main()
     DigitalOut en (ENABLE);
     en.write(1);
 
+    L.setMode(Bipolar);
+    L.setPower(0);
+    R.setMode(Bipolar);
+    R.setPower(0);
+
+
+
+    wait(5);
    
-    while (true) {
+    
         square();
         // square();
         //lcd.locate(8,20);
         //lcd.printf("L Pulses: %02.1d   R Pulses: %02.1d", L.encoder.getPulses(), R.encoder.getPulses());
-    }
+    
 
 }
